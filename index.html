@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Image Selector</title>
+</head>
+<body>
+	<input type="text" id="input" onkeyup="selectImage(event)">
+	<script>
+		function selectImage(event) {
+			// Get the input element and the key code of the pressed key
+			var input = document.getElementById("input");
+			var key = event.which || event.keyCode;
+
+			// If the key is a letter or number, add the corresponding image
+			if ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || (key >= 97 && key <= 122)) {
+				var imageNum = key % 36 + 1;
+				var imageSrc = "images/" + imageNum + ".png";
+				var image = document.createElement("img");
+				image.src = imageSrc;
+				document.body.appendChild(image);
+			}
+		}
+	</script>
+</body>
+</html>
