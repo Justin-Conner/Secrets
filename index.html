@@ -14,7 +14,7 @@
 			// If the key is a letter or number, add the corresponding image
 			if ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || (key >= 97 && key <= 122)) {
 				var imageNum = key % 36 + 1;
-				var imageSrc = "images/" + imageNum + ".png";
+				var imageSrc = "images/" + imageNum + ".jpg";
 				var image = document.createElement("img");
 				image.src = imageSrc;
 				document.body.appendChild(image);
