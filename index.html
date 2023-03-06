@@ -1,28 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Image Selector</title>
+	<title>Secrets</title>
+	<style>
+		img {
+			width: 150px;
+			height: 150px;
+			background: transparent;
+		}
+		body{
+			background-color: aquamarine;
+		}
+		.titleContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  justify-content: center;
+}
+
+	</style>
 </head>
 <body>
+	<div id="titleContainer">
 	<input type="text" id="input" onkeyup="selectImage(event)">
+	<button id="clearButton">Clear</button>
+	<button id="downloadButton">Download Images</button></div>
 	<script>
+		var imageCounter = 0;
 		function selectImage(event) {
-			// Get the input element and the key code of the pressed key
+    // Get the input element and the key code of the pressed key
+    var input = document.getElementById("input");
+    var key = event.which || event.keyCode;
+
+    // If the key is a letter or number, add the corresponding image
+    if (key === 32) {
+        var imageSrc = "images/32.jpg";
+        var image = document.createElement("img");
+        image.setAttribute("src", imageSrc);
+
+        document.body.appendChild(image);
+        imageCounter++;
+        if (imageCounter % 2 == 1) {
+            image.style.transform = "rotate(180deg)";
+        }
+    } else if ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || (key >= 97 && key <= 122)) {
+        var imageSrc = "images/" + key + ".jpg";
+        var image = document.createElement("img");
+        image.setAttribute("src", imageSrc);
+
+        document.body.appendChild(image);
+        imageCounter++;
+        if (imageCounter % 2 == 1) {
+            image.style.transform = "rotate(180deg)";
+        }
+    }
+}
+
+		// Add a click event listener to the clear button
+		var clearButton = document.getElementById("clearButton");
+		clearButton.addEventListener("click", function() {
+			// Get all the images and the input element
+			var images = document.getElementsByTagName("img");
 			var input = document.getElementById("input");
-			var key = event.which || event.keyCode;
 
-			// If the key is a letter or number, add the corresponding image
-			if ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || (key >= 97 && key <= 122)) {
-				var imageNum = key % 36 + 1;
-				var imageSrc = "images/" + String.fromCharCode(key) + ".jpg";
-
-				var image = document.createElement("img");
-				image.src = imageSrc;
-				document.body.appendChild(image);
+			// Remove all the images and clear the input element
+			while (images.length > 0) {
+				images[0].parentNode.removeChild(images[0]);
 			}
-		}
+			input.value = "";
+		});
+
+		// Add a click event listener to the download button
+		var downloadButton = document.getElementById("downloadButton");
+		downloadButton.addEventListener("click", function() {
+			// Create a new canvas element
+			var canvas = document.createElement("canvas");
+			var ctx = canvas.getContext("2d");
+
+			// Get all the images and calculate the canvas size
+			var images = document.getElementsByTagName("img");
+			var canvasWidth = images.length * 200;
+			var canvasHeight = 200;
+			canvas.width = canvasWidth;
+			canvas.height = canvasHeight;
+
+			// Draw all the images on the canvas
+			var x = 0;
+			for (var i = 0; i < images.length; i++) {
+				ctx.drawImage(images[i], x, 0, 200, 200);
+				x += 200;
+			}
+
+			// Convert the canvas to a data URL and download the image
+			var dataURL = canvas.toDataURL("image/jpeg");
+			var link = document.createElement("a");
+			link.href = dataURL;
+			link.download = "images.jpg";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		});
 	</script>
 </body>
 </html>
-<!-- https://www.linkedin.com/posts/justin-conner-816337224_secret-encrypted-puzzles-activity-7033079014428672000-pPTB?utm_source=share&utm_medium=member_desktop -->
-
